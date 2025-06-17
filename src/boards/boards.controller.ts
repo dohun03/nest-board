@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Board, BoardStatus } from './board.model';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { BoardsService } from './boards.service';
@@ -13,29 +13,24 @@ export class BoardsController {
   // }
   constructor(private boardsService: BoardsService) {}
 
-  @Get()
+  @Get('/')
   getAllBoard(): Board[] { // getAllBoards() 이 함수랑
     return this.boardsService.getAllBoards(); // 이 메서드는 이름만같은거
   }
 
   @Post()
-  createBoard(
-    @Body() createBoardDto: CreateBoardDto
-  ): Board {
+  @UsePipes(ValidationPipe)
+  createBoard(@Body() createBoardDto: CreateBoardDto): Board {
     return this.boardsService.createBoard(createBoardDto);
   }
 
   @Get('/:id')
-  getBoardById(
-    @Param('id') id: string
-  ): Board | undefined {
+  getBoardById(@Param('id') id: string): Board {
     return this.boardsService.getBoardById(id);
   }
 
   @Delete('/:id')
-  deleteBoards(
-    @Param('id') id: string
-  ): void {
+  deleteBoards(@Param('id') id: string): void {
     this.boardsService.deleteBoard(id);
   }
 
