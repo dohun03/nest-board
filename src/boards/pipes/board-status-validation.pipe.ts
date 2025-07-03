@@ -1,5 +1,5 @@
 import { BadRequestException, PipeTransform } from "@nestjs/common"
-import { BoardStatus } from "../board.model";
+import { BoardStatus } from "../board-status.enum";
 
 export class BoardStatusValidationPipe implements PipeTransform {
   readonly StatusOptions = [ // 클래스 내부의 변수(상태) = 속성(프로퍼티).
