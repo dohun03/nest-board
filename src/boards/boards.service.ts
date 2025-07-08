@@ -34,7 +34,7 @@ export class BoardsService {
   async getBoardById(id: number): Promise<BoardEntity> {
     const found = await this.boardRepository.findOneBy({id:id});
 
-    if(!found) {
+    if (!found) {
       throw new NotFoundException(`${id}에 대한 게시글를 찾을 수 없습니다.`);
     }
 
@@ -44,7 +44,7 @@ export class BoardsService {
   async deleteBoard(id: number): Promise<void> {
     const result = await this.boardRepository.delete(id);
 
-    if(result.affected === 0) {
+    if (result.affected === 0) {
       throw new NotFoundException(`${id}에 대한 게시글를 찾을 수 없습니다.`);
     }
   }

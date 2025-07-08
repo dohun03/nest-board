@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuthCredentialsDto } from './dto/auth-credential.dto';
@@ -21,11 +21,21 @@ export class AuthService {
     try {
       await this.UserRepository.save(user);
     } catch (error) {
-      if(error.code === '23505'){
+      if (error.code === '23505') {
         throw new ConflictException('이미 존재하는 username 입니다.');
       } else {
         throw new ConflictException();
       }
+    }
+  }
+
+  async signIn(authCredentialsDto: AuthCredentialsDto): Promise<String> {
+    const { username, password } = authCredentialsDto;
+    const found = await this.UserRepository.findOneBy({ username });
+    if (found && (await bcrypt.compare(password, found.password))) {
+      return '로그인 성공';
+    } else {
+      throw new UnauthorizedException('로그인 실패');
     }
   }
 }
