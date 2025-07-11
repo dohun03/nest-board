@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 import { BoardEntity } from './board.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
-@Injectable() // 어디서든 사용 ㄱㄴ
+@Injectable() // 어디서든 이 클래스를 주입해서 사용 가능하다. *.module.ts 에도 등록해야 한다.
 export class BoardsService {
   constructor(
     @InjectRepository(BoardEntity)
