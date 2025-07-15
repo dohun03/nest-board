@@ -21,7 +21,7 @@ export class AuthController {
   }
 
   @Post('/test')
-  @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard()) // 인증 미들웨어
   test(@GetUser() user: UserEntity) {
     console.log('유저입니다',user);
   }

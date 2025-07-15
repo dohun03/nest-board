@@ -9,7 +9,7 @@ import { UserEntity } from './user.entity';
 
 @Module({
   imports: [
-    PassportModule.register({ defaultStratgey: 'jwt' }),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: 'Secret1234', // secret text 및 토큰 생성
       signOptions: {

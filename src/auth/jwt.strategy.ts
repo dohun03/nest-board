@@ -5,10 +5,10 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Repository } from 'typeorm';
 import { UserEntity } from './user.entity';
 
-const BaseStrategy = PassportStrategy(Strategy) as new (...args: any[]) => any;
+// const BaseStrategy = PassportStrategy(Strategy) as new (...args: any[]) => any;
 
 @Injectable()
-export class JwtStrategy extends BaseStrategy {
+export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,

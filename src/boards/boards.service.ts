@@ -5,6 +5,7 @@ import { v1 as uuid } from 'uuid';
 import { Repository } from 'typeorm';
 import { BoardEntity } from './board.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserEntity } from 'src/auth/user.entity';
 
 @Injectable() // 어디서든 이 클래스를 주입해서 사용 가능하다. *.module.ts 에도 등록해야 한다.
 export class BoardsService {
@@ -15,17 +16,20 @@ export class BoardsService {
 
   // private boards: Board[] = []; // this.boards = Board 객체 형식만 받겠다.(복수) = []
 
-  getAllBoards(): Promise<BoardEntity[]> { // 여러개 받으니까 배열로 리턴
-    return this.boardRepository.find();
+  getAllBoards(user: UserEntity): Promise<BoardEntity[]> { // 여러개 받으니까 배열로 리턴
+    return this.boardRepository.createQueryBuilder('board_entity')
+    .where('board_entity.userId = :userId', { userId: user.id }) // 조건문 { userId: user.id } → :userId에 들어갈 실제 값 바인딩. (인젝션 공격 방지)
+    .getMany(); // 위 쿼리 결과값 전부 가져오기
   }
 
-  async createBoard(createBoardDto: CreateBoardDto): Promise<BoardEntity> { 
+  async createBoard(createBoardDto: CreateBoardDto, user: UserEntity): Promise<BoardEntity> { 
     const { title, description } = createBoardDto;
 
     const board = this.boardRepository.create({
       title,
       description,
-      status: BoardStatus.PUBLIC
+      status: BoardStatus.PUBLIC,
+      user
     });
     await this.boardRepository.save(board);
     return board;
