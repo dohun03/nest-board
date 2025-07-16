@@ -37,8 +37,8 @@ export class BoardsController {
 
   @Delete('/:id')
   //ParseIntPipe = 파라미터 int 형식인지 확인
-  deleteBoard(@Param('id', ParseIntPipe) id): void {
-    this.boardsService.deleteBoard(id);
+  deleteBoard(@Param('id', ParseIntPipe) id, @GetUser() user: UserEntity): Promise<void> {
+    return this.boardsService.deleteBoard(id, user);
   }
 
   @Patch('/:id/status')

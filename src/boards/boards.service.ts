@@ -45,8 +45,8 @@ export class BoardsService {
     return found;
   }
 
-  async deleteBoard(id: number): Promise<void> {
-    const result = await this.boardRepository.delete(id);
+  async deleteBoard(id: number, user: UserEntity): Promise<void> {
+    const result = await this.boardRepository.delete({id, user}); // WHERE id = ? AND userId = ? / userEntity 기본 키(id)를 자동으로 설정
 
     if (result.affected === 0) {
       throw new NotFoundException(`${id}에 대한 게시글를 찾을 수 없습니다.`);
@@ -57,7 +57,7 @@ export class BoardsService {
     const board = await this.getBoardById(id);
   
     if (!board) {
-      throw new Error(`Board with ID ${id} not found`);
+      throw new Error(`${id}에 대한 게시글를 찾을 수 없습니다.`);
     }
     
     board.status = status;  
