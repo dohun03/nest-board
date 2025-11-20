@@ -110,10 +110,8 @@ package.json # 프로젝트 의존성 및 명령어
 
 ## [ERD 데이터 모델링]
 
-- **tbl_user**: 사용자 정보를 저장하는 테이블.
-- **tbl_board**: 게시글에 대한 내용을 저장.
-- **tbl_comment**: 게시글에 달린 댓글을 저장.
-- **tbl_like**: 게시글에 달린 좋아요를 저장.
+- **user_entity**: 사용자 정보를 저장.
+- **board_entity**: 게시글에 대한 내용을 저장.
 
 <img width="1024" height="300" alt="Image" src="https://github.com/user-attachments/assets/79ca324b-e00b-4dff-9ebf-6739604b6ee0" />
 
@@ -133,42 +131,6 @@ cd your-project # 프로그램이 실행될 디렉토리로 이동
 npm install
 
 npm run start:dev
-
-```
-postgreSQL 테이블 생성 쿼리
-```
-CREATE TABLE IF NOT EXISTS public.board_entity
-(
-    id integer NOT NULL DEFAULT nextval('board_entity_id_seq'::regclass),
-    title character varying COLLATE pg_catalog."default" NOT NULL,
-    description character varying COLLATE pg_catalog."default" NOT NULL,
-    status character varying COLLATE pg_catalog."default" NOT NULL,
-    "userId" integer,
-    CONSTRAINT "PK_9a1a7d507e2e23cc5af2a3e5d7a" PRIMARY KEY (id),
-    CONSTRAINT "FK_6b0ae2f186480df1ea3bb52eebd" FOREIGN KEY ("userId")
-        REFERENCES public.user_entity (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-)
-
-TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.board_entity
-    OWNER to postgres;
-
-CREATE TABLE IF NOT EXISTS public.user_entity
-(
-    id integer NOT NULL DEFAULT nextval('user_entity_id_seq'::regclass),
-    username character varying COLLATE pg_catalog."default" NOT NULL,
-    password character varying COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT "PK_b54f8ea623b17094db7667d8206" PRIMARY KEY (id),
-    CONSTRAINT "UQ_9b998bada7cff93fcb953b0c37e" UNIQUE (username)
-)
-
-TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.user_entity
-    OWNER to postgres;
 
 ```
 
@@ -200,3 +162,4 @@ ALTER TABLE IF EXISTS public.user_entity
 
 - 프론트 페이지 구현
 - 게시글에 댓글 추가 및 댓글 CRUD 기능
+
